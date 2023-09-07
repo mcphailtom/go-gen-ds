@@ -92,6 +92,12 @@ func (t *Tree[T, id]) Insert(node Node[T, id]) error {
 			child.SetParent(node)
 		}
 		node.AddChildren(children...)
+
+		existingNode.RemoveChildren(children...)
+		parent, err := t.nodeIndex.find(existingNode.GetParentID())
+		if err != nil {
+			parent.RemoveChildren(existingNode)
+		}
 	}
 
 	// add to nodeIndex index

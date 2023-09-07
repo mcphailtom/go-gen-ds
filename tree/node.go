@@ -18,6 +18,9 @@ type Node[T any, id comparable] interface {
 	// AddChildren adds a list of Nodes as children of this node.
 	AddChildren(children ...Node[T, id])
 
+	// RemoveChildren removes a list of Nodes as children of this node.
+	RemoveChildren(children ...Node[T, id])
+
 	// ReplaceChildren replaces the current children of this node with the provided list of Nodes.
 	ReplaceChildren(children ...Node[T, id])
 
