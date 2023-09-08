@@ -4,6 +4,7 @@ package tree
 
 import (
 	"errors"
+	"reflect"
 )
 
 var (
@@ -62,7 +63,7 @@ func (t *Tree[T, id]) Insert(node Node[T, id]) error {
 		exists = true
 	}
 
-	if t.root == nil { // always insert the first element
+	if reflect.ValueOf(&t.root).Elem().IsZero() { // always insert the first element
 		t.root = node
 	} else {
 		parent, err := t.nodeIndex.find(node.GetParentID())
