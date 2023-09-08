@@ -106,16 +106,10 @@ func (t *Tree[T, id]) Insert(node Node[T, id]) error {
 	return nil
 }
 
-func (t *Tree[T, id]) Exists(node Node[T, id]) bool {
-	_, err := t.nodeIndex.find(node.GetID())
+// Exists returns true if the node exists in the tree.
+func (t *Tree[T, id]) Exists(pid id) bool {
+	_, err := t.nodeIndex.find(pid)
 	return err == nil
-}
-
-// reroot is a private method that reassigns the root node of the tree.
-func (t *Tree[T, id]) reroot(newHead Node[T, id]) {
-	t.root.SetParent(newHead)
-	newHead.AddChildren(t.root)
-	t.root = newHead
 }
 
 // Merge the source tree (passed in the argument) into the target tree.
@@ -182,4 +176,11 @@ func (t *Tree[T, id]) FindParents(pid id) ([]Node[T, id], bool) {
 	}
 
 	return parents, true
+}
+
+// reroot reassigns the root node of the
+func (t *Tree[T, id]) reroot(newHead Node[T, id]) {
+	t.root.SetParent(newHead)
+	newHead.AddChildren(t.root)
+	t.root = newHead
 }
