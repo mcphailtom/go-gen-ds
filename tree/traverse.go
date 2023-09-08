@@ -102,7 +102,8 @@ func dfs[T any, id comparable](q *queue.Queue, search chan<- Node[T, id], maxDep
 	case nodeWithDepth[T, id]:
 		childDepth := cur.depth + 1
 		if maxDepth == 0 || childDepth <= maxDepth {
-			for _, child := range cur.node.GetChildren() {
+			for i := len(cur.node.GetChildren()) - 1; i >= 0; i-- {
+				child := cur.node.GetChildren()[i]
 				cnd := nodeWithDepth[T, id]{
 					node:  child,
 					depth: childDepth,

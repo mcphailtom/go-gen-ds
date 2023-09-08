@@ -53,7 +53,7 @@ func (tts *TreeTestSuite) TestTraversal() {
 			results = append(results, node.GetID())
 		}
 
-		dfsExpectedOrder := []int{0, 2, 8, 7, 1, 4, 3}
+		dfsExpectedOrder := []int{0, 1, 3, 4, 2, 7, 8}
 		tts.Equal(dfsExpectedOrder, results, "DFS traversal did not match expected order")
 	})
 
@@ -86,7 +86,7 @@ func (tts *TreeTestSuite) TestTraversal() {
 			results = append(results, node.GetID())
 		}
 
-		dfsExpectedOrder := []int{0, 2, 8, 7, 1, 4, 5, 6, 3, 10, 11, 9}
+		dfsExpectedOrder := []int{0, 1, 3, 9, 10, 11, 4, 5, 6, 2, 7, 8}
 		tts.Equal(dfsExpectedOrder, results, "DFS traversal did not match expected order")
 	})
 
