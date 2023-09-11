@@ -54,13 +54,13 @@ func (t *Tree[T, id]) Root() Node[T, id] {
 func (t *Tree[T, id]) Insert(node Node[T, id]) error {
 
 	// Check for the existence of the nodeIndex key in the index
-	var exists bool
 	existingNode, err := t.nodeIndex.find(node.GetID())
 	if err == nil {
 		if !t.updatesAllowed {
 			return NodeExists
 		}
-		exists = true
+		existingNode.UpdateNode(node)
+		return nil
 	}
 
 	if reflect.ValueOf(&t.root).Elem().IsZero() { // always insert the first element
@@ -83,12 +83,6 @@ func (t *Tree[T, id]) Insert(node Node[T, id]) error {
 		node.SetParent(parent)
 		node.ReplaceChildren() // Reset children, if any
 		parent.AddChildren(node)
-	}
-
-	// If there is an existing node, update it
-	if exists {
-		existingNode.UpdateNode(node)
-		return nil
 	}
 
 	// add to nodeIndex index
