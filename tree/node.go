@@ -26,4 +26,7 @@ type Node[T any, id comparable] interface {
 
 	// SetParent sets the parent of this node.
 	SetParent(parent Node[T, id])
+
+	// UpdateNode updates the node with the provided node.
+	UpdateNode(node Node[T, id])
 }

@@ -17,16 +17,16 @@ var (
 
 // Tree implements a tree based data structure with an index.
 type Tree[T any, id comparable] struct {
-	root            Node[T, id]
-	nodeIndex       *index[T, id]
-	replaceExisting bool
+	root           Node[T, id]
+	nodeIndex      *index[T, id]
+	updatesAllowed bool
 }
 
 // NewTree creates and returns an empty tree.
 func NewTree[T any, id comparable](options ...Option[T, id]) (*Tree[T, id], error) {
 	t := Tree[T, id]{
-		nodeIndex:       &index[T, id]{},
-		replaceExisting: false,
+		nodeIndex:      &index[T, id]{},
+		updatesAllowed: false,
 	}
 
 	if err := t.withOptions(options...); err != nil {
@@ -57,7 +57,7 @@ func (t *Tree[T, id]) Insert(node Node[T, id]) error {
 	var exists bool
 	existingNode, err := t.nodeIndex.find(node.GetID())
 	if err == nil {
-		if !t.replaceExisting {
+		if !t.updatesAllowed {
 			return NodeExists
 		}
 		exists = true
@@ -85,25 +85,14 @@ func (t *Tree[T, id]) Insert(node Node[T, id]) error {
 		parent.AddChildren(node)
 	}
 
-	// If there is an existing node, remove it from the tree
-	// The new node inherits the children of the existing node
+	// If there is an existing node, update it
 	if exists {
-		children := existingNode.GetChildren()
-		for _, child := range children {
-			child.SetParent(node)
-		}
-		node.AddChildren(children...)
-
-		existingNode.RemoveChildren(children...)
-		parent, err := t.nodeIndex.find(existingNode.GetParentID())
-		if err != nil {
-			parent.RemoveChildren(existingNode)
-		}
+		existingNode.UpdateNode(node)
+		return nil
 	}
 
 	// add to nodeIndex index
 	t.nodeIndex.insert(node)
-
 	return nil
 }
 
