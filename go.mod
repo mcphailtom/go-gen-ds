@@ -1,4 +1,4 @@
-module github.com/mcphailtom/go-gen-ds
+module github.com/n1lp0inter/go-gen-ds
 
 go 1.21.0
 
