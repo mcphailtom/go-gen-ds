@@ -59,6 +59,9 @@ func (c *testnode) SetParent(parent Node[*testnode, int]) {
 	c.parent = parent
 }
 
+func (c *testnode) UpdateNode(node Node[*testnode, int]) {
+}
+
 type TreeTestSuite struct {
 	suite.Suite
 }

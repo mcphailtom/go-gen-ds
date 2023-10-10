@@ -70,6 +70,8 @@ func (t *Tree[T, id]) Insert(node Node[T, id]) error {
 		if err != nil {
 			if t.root.GetParentID() == node.GetID() { // parent does not exist but incoming node is parent of root
 				t.reroot(node)
+				t.nodeIndex.insert(node)
+				return nil
 			} else { // parent does not exist, do not add
 				return ParentNotFound
 			}
